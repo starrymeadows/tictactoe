@@ -5,9 +5,23 @@ const gameboard = (() => {
         board.splice(index, 1, marker);
     }
 
+    const deactivateBoard = () => {
+        for (i = 0; i < board.length; i++) {
+            if (board[i] === '') board.splice(i, 1, ' ');
+        }
+    }
+
+    const resetBoard = () => {
+        for (i = 0; i < board.length; i++) {
+            board.splice(i, 1, '');
+        }
+    }
+
     return {
         board,
         updateBoard,
+        deactivateBoard,
+        resetBoard,
     }
 })();
 
@@ -36,13 +50,6 @@ const displayController = (() => {
         }
     }
 
-    const deactivateBoard = () => {
-        for (i = 0; i < cells.length; i++) {
-            let cell = cells.item(i);
-            cell.removeEventListener('click', () => gameLogic.placeMarker(index));
-        }
-    }
-
     // display win message
     const announceWinner = (winner) => {
         if (winner.id === 1) console.log('one');
@@ -63,17 +70,26 @@ const displayController = (() => {
                 break;
         }
         const gameover = document.querySelector('.gameover');
-        gameover.classList.add('active');
+        gameover.classList.toggle('active');
+        const replayBtn = document.querySelector('.replay');
+        replayBtn.addEventListener('click', replayGame);
     }
 
     // add replay button
+    const replayGame = () => {
+        const outcome = document.querySelector('.outcome');
+        outcome.classList.remove('playerOne', 'playerTwo', 'accent');
+        const gameover = document.querySelector('.gameover');
+        gameover.classList.toggle('active');
+        gameboard.resetBoard();
+        displayController.updateBoard();
+    }
 
     // reset gameboard
 
     return {
         initializeBoard,
         updateBoard,
-        deactivateBoard,
         announceWinner,
     }
 
@@ -100,47 +116,20 @@ const gameLogic = (() => {
     }
 }
     const isWinner = () => {
-        checkRows();
-        checkColumns();
-        checkDiagonals();
-        if (board.every(cell => cell)) endGame('tie');
-    }
-
-    const checkRows = () => {
-        if (board[0] && board[1] && board[2]) {
-            if (board[0] === board[1] && board[1] === board[2]) endGame(currentPlayer); 
-        };
-        if (board[3] && board[4] && board[5]) {
-            if (board[3] === board[4] && board[4] === board[5]) endGame(currentPlayer);
-        }
-        if (board[6] && board[7] && board[8]) {
-            if (board[6] === board[7] && board[7] === board[8]) endGame(currentPlayer);
-        }
-    }
-
-    const checkColumns = () => {
-        if (board[0] && board[3] && board[6]) {
-            if (board[0] === board[3] && board[3] === board[6]) endGame(currentPlayer); 
-        };
-        if (board[1] && board[4] && board[7]) {
-            if (board[1] === board[4] && board[4] === board[7]) endGame(currentPlayer);
-        }
-        if (board[2] && board[5] && board[8]) {
-            if (board[2] === board[5] && board[5] === board[8]) endGame(currentPlayer);
-        }
-    }
-
-    const checkDiagonals = () => {
-        if (board[0] && board[4] && board[8]) {
-            if (board[0] === board[4] && board[4] === board[8]) endGame(currentPlayer); 
-        }
-        if (board[2] && board[4] && board[6]) {
-            if (board[2] === board[4] && board[4] === board[6]) endGame(currentPlayer);
-        }
+        const marked = currentPlayer.marker;
+        if (board[0] === marked && board[1] === marked && board[2] === marked
+        || board[3] === marked && board[4] === marked && board[5] === marked
+        || board[7] === marked && board[8] === marked && board[9] === marked
+        || board[0] === marked && board[3] === marked && board[6] === marked
+        || board[1] === marked && board[4] === marked && board[7] === marked
+        || board[2] === marked && board[5] === marked && board[8] === marked
+        || board[0] === marked && board[4] === marked && board[8] === marked
+        || board[2] === marked && board[4] === marked && board[6] === marked) endGame(currentPlayer);
+        else if (board.every(cell => cell)) endGame('tie');
     }
 
     const endGame = (winner) => {
-        displayController.deactivateBoard();
+        gameboard.deactivateBoard();
         displayController.announceWinner(winner);
     }
 
