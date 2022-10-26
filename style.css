@@ -1,0 +1,28 @@
+:root {
+    --background: #A4A9AD;
+    --border-color: #23001E;
+    --playerOne: #EF5B5B;
+    --playerTwo: #20A39E;
+    --accent: #FFBA49;
+}
+
+body {
+    background-color: var(--border-color);
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#board {
+    height: 400px;
+    width: 400px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    gap: 5px;
+}
+
+.cell {
+    background-color: var(--background);
+}
