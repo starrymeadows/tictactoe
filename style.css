@@ -1,17 +1,145 @@
+@import url('https://fonts.googleapis.com/css2?family=Syncopate&display=swap');
+
 :root {
     --background: #A4A9AD;
     --border-color: #23001E;
     --playerOne: #EF5B5B;
     --playerTwo: #20A39E;
     --accent: #FFBA49;
+    --panel: #a4a9ad50;
+}
+
+* {
+    box-sizing: border-box;
 }
 
 body {
+    font-family: 'Syncopate', sans-serif;
+}
+
+
+#content {
     background-color: var(--border-color);
     height: 100vh;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
+}
+
+#title {
+    color: var(--background);
+}
+
+#game {
+    width: auto;
+    display: flex;
+    gap: 25px;
+}
+
+.player {
+    height: 200px;
+    width: 250px;
+    padding: 10px;
+    background-color: var(--panel);
+}
+
+form > .name {
+    display: flex;
+    flex-direction: column;
+}
+
+.name input[type="text"] {
+    padding: 5px 2px;
+    appearance: none;
+    background-color: rgba(0, 0, 0, 0);
+    margin-top: 5px;
+    border: 1px solid rgba(0, 0, 0, 0);
+    color: var(--background);
+}
+
+.name input[type="text"]:focus {
+    background-color: rgba(0, 0, 0, 0.2);
+}
+
+.name input[type="text"]:focus-visible {
+    outline: none;
+}
+
+#playerOne-name {
+    border-bottom: 1px solid var(--playerOne);
+}
+
+#playerOne-name:focus {
+    border: 1px solid var(--playerOne);
+}
+
+#playerTwo-name {
+    border-bottom: 1px solid var(--playerTwo);
+}
+
+#playerTwo-name:focus {
+    border: 1px solid var(--playerTwo);
+}
+
+.choices {
+    padding: 5px;
+    display: flex;
+    justify-content: space-around;
+}
+
+.marker p {
+    margin-bottom: 5px;
+    text-align: center;
+}
+
+input[type="radio"] {
+    opacity: 0;
+    position: fixed;
+    width: 0;
+}
+
+input[type="radio"] + label {
+    display: inline-block;
+    background-color: rgba(0, 0, 0, 0.2);
+    padding: 15px 20px;
+    font-size: 20px;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    transition: ease 0.2s;
+}
+
+.marker input[type="radio"]:checked + label {
+    background-color:var(--playerOne);
+    color: var(--border-color);
+}
+
+.marker input[type="radio"]:focus + label {
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+}
+
+.marker label:hover {
+    background-color: var(--border-color);
+}
+
+.start {
+    appearance: none;
+    outline: none;
+    width: 250px;
+    margin-top: 20px;
+    padding: 15px 20px;
+    font-size: 20px;
+    border: 1px solid var(--border-color);
+    background-color: var(--accent);
+    border-radius: 4px;
+    transition: ease 0.2s;
+}
+
+.start:hover {
+    background-color: var(--border-color);
+    border-color: var(--accent);
+    color: var(--accent);
+    box-shadow: 0 0 20px var(--accent);
 }
 
 #board {
@@ -25,4 +153,43 @@ body {
 
 .cell {
     background-color: var(--background);
+    font-size: 100px;
+    line-height: 75px;
+    font-weight: 700;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.enemy {
+    color: var(--playerTwo);
+    background-color: var(--panel);
+    padding: 10px;
+    margin-top: 10px;
+    text-align: center;
+}
+
+.enemy input[type="radio"]:checked + label {
+    background-color:var(--playerTwo);
+    color: var(--border-color);
+}
+
+.enemy input[type="radio"]:focus + label {
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+}
+
+.enemy label:hover {
+    background-color: var(--border-color);
+  }
+
+.playerOne {
+    color: var(--playerOne);
+}
+
+.playerTwo {
+    color: var(--playerTwo);
+}
+
+.accent {
+    color: var(--accent);
 }

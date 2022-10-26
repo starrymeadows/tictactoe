@@ -9,16 +9,73 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div id="board">
-        <div class="cell"></div>
-        <div class="cell"></div>
-        <div class="cell"></div>
-        <div class="cell"></div>
-        <div class="cell"></div>
-        <div class="cell"></div>
-        <div class="cell"></div>
-        <div class="cell"></div>
-        <div class="cell"></div>
+    <div id="content">
+        <h1 id="title">
+            <span class="playerOne">Tic</span> &#8226; <span class="playerTwo">Tac</span> &#8226; <span class="accent">Toe</span>
+        </h1>
+        <div id="game">
+            <div class="left">
+                <div class="player playerOne">
+                    <form spellcheck="false">
+                        <div class="name">
+                            <label for="playerOne-name">Name</label>
+                            <input type="text" name="playerOne-name" id="playerOne-name" placeholder="PlayerOne" value="PlayerOne">
+                        </div>
+                        <div class="marker">
+                            <p>Choose your marker:</p>
+                            <div class="choices">
+                            <div class="X">
+                            <input type="radio" name="playerOne-marker" id="X" value="X" checked>
+                            <label for="X">X</label>
+                            </div>
+                            <div class="O">
+                                <input type="radio" name="playerOne-marker" id="O" value="O">
+                                <label for="O">O</label>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <button type="button" class="start">Start Game</button>
+            </div>
+            <div id="board">
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+            </div>
+            <div class="right">
+                <div class="player playerTwo">
+                    <form>
+                        <div class="name">
+                            <label for="playerTwo-name">Name</label>
+                            <input type="text" name="playerTwo-name" id="playerTwo-name" placeholder="playerTwo" value="playerTwo">
+                        </div>
+                        <div class="marker">
+                            <p>You'll receive the other marker.</p>
+                        </div>
+                    </form>
+                </div>
+                <div class="enemy">
+                    <p>Choose your foe:</p>
+                    <div class="choices">
+                        <div class="human">
+                        <input type="radio" name="foe" id="human" value="human" checked>
+                        <label for="human">Human</label>
+                        </div>
+                        <div class="ai">
+                            <input type="radio" name="foe" id="ai" value="ai">
+                            <label for="ai">AI</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 <script src="scripts.js"></script>
 </body>
