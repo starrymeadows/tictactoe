@@ -37,6 +37,17 @@ body {
     gap: 25px;
 }
 
+.player,
+.start,
+.enemy,
+.gameover {
+    visibility: hidden;
+}
+
+.active {
+    visibility: visible;
+}
+
 .player {
     height: 200px;
     width: 250px;
@@ -122,7 +133,8 @@ input[type="radio"] + label {
     background-color: var(--border-color);
 }
 
-.start {
+.start,
+.replay {
     appearance: none;
     outline: none;
     width: 250px;
@@ -135,11 +147,24 @@ input[type="radio"] + label {
     transition: ease 0.2s;
 }
 
-.start:hover {
+.start:hover,
+.replay:hover {
     background-color: var(--border-color);
     border-color: var(--accent);
     color: var(--accent);
     box-shadow: 0 0 20px var(--accent);
+}
+
+.gameover {
+    background-color: var(--panel);
+    padding: 10px;
+    margin-top: 20px;
+    text-align: center;
+}
+
+.replay {
+    width: fit-content;
+    margin: 0;
 }
 
 #board {

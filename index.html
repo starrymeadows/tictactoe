@@ -15,7 +15,7 @@
         </h1>
         <div id="game">
             <div class="left">
-                <div class="player playerOne">
+                <div class="player playerOne active">
                     <form spellcheck="false">
                         <div class="name">
                             <label for="playerOne-name">Name</label>
@@ -36,7 +36,11 @@
                         </div>
                     </form>
                 </div>
-                <button type="button" class="start">Start Game</button>
+                <button type="button" class="start active">Start Game</button>
+                <div class="gameover active">
+                    <p class="outcome">The winner is...</p>
+                    <button class="replay">Replay?</button>
+                </div>
             </div>
             <div id="board">
                 <div class="cell"></div>
@@ -50,7 +54,7 @@
                 <div class="cell"></div>
             </div>
             <div class="right">
-                <div class="player playerTwo">
+                <div class="player playerTwo active">
                     <form>
                         <div class="name">
                             <label for="playerTwo-name">Name</label>
@@ -61,7 +65,7 @@
                         </div>
                     </form>
                 </div>
-                <div class="enemy">
+                <div class="enemy active">
                     <p>Choose your foe:</p>
                     <div class="choices">
                         <div class="human">
