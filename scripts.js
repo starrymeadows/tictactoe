@@ -80,12 +80,57 @@ const gameLogic = (() => {
     }
 
     // determine win / tie
+    const isWinner = () => {
+        checkRows();
+        checkColumns();
+        checkDiagonals();
+        if (board.every(cell => cell)) console.log('tie');
+    }
+
+    // check rows
+    const checkRows = () => {
+        if (board[0] && board[1] && board[2]) {
+            if (board[0] === board[1] && board[1] === board[2]) console.log("row one"); 
+        };
+        if (board[3] && board[4] && board[5]) {
+            if (board[3] === board[4] && board[4] === board[5]) console.log("row two");
+        }
+        if (board[6] && board[7] && board[8]) {
+            if (board[6] === board[7] && board[7] === board[8]) console.log("row three");
+        }
+    }
+
+    // check columns
+    const checkColumns = () => {
+        if (board[0] && board[3] && board[6]) {
+            if (board[0] === board[3] && board[3] === board[6]) console.log("column one"); 
+        };
+        if (board[1] && board[4] && board[7]) {
+            if (board[1] === board[4] && board[4] === board[7]) console.log("column two");
+        }
+        if (board[2] && board[5] && board[8]) {
+            if (board[2] === board[5] && board[5] === board[8]) console.log("column three");
+        }
+    }
+
+    // check diagnonals
+    const checkDiagonals = () => {
+        if (board[0] && board[4] && board[8]) {
+            if (board[0] === board[4] && board[4] === board[8]) console.log("left"); 
+        }
+        if (board[2] && board[4] && board[6]) {
+            if (board[2] === board[4] && board[4] === board[6]) console.log("right"); 
+        }
+    }
+
 
     // place marker
     const placeMarker = (index) => {
         if (gameboard.board[index] === '') {
             gameboard.updateBoard(index, currentPlayer.marker);
             displayController.updateBoard();
+            board = gameboard.board;
+            isWinner();
             swapPlayer();
         }
     }
