@@ -47,6 +47,22 @@ const displayController = (() => {
     }
 
     // display win message
+    const announceWinner = () => {
+        console.log(gameLogic.currentPlayer.playerName);
+        // const outcome = document.querySelector('.outcome');
+        // switch (winner) {
+        //     case 'tie':
+        //         outcome.textContent = `It's a tie!`
+        //         outcome.classList.toggle('.accent');
+        //         break;
+        
+        //     default:
+        //         outcome.textContent = `${gameLogic.currentPlayer.playerName} wins!`;
+        //         break;
+        // }
+        // const gameover = document.querySelector('.gameover');
+        // gameover.classList.add('active');
+    }
 
     // add replay button
 
@@ -55,6 +71,7 @@ const displayController = (() => {
     return {
         initializeBoard,
         updateBoard,
+        announceWinner,
     }
 
 })();
@@ -75,54 +92,65 @@ const gameLogic = (() => {
 
     // swap player
     const swapPlayer = () => {
-        if (currentPlayer === player1) currentPlayer = player2;
-        else currentPlayer = player1;
+        if (currentPlayer === player1) {
+            currentPlayer = player2;
+            console.log(currentPlayer.playerName);
+            return currentPlayer;
+        } else {
+            currentPlayer = player1;
+            console.log(currentPlayer.playerName);
+            return currentPlayer;
     }
+}
 
     // determine win / tie
     const isWinner = () => {
         checkRows();
         checkColumns();
         checkDiagonals();
-        if (board.every(cell => cell)) console.log('tie');
+        if (board.every(cell => cell)) endGame('tie');
     }
 
     // check rows
     const checkRows = () => {
         if (board[0] && board[1] && board[2]) {
-            if (board[0] === board[1] && board[1] === board[2]) console.log("row one"); 
+            if (board[0] === board[1] && board[1] === board[2]) endGame(); 
         };
         if (board[3] && board[4] && board[5]) {
-            if (board[3] === board[4] && board[4] === board[5]) console.log("row two");
+            if (board[3] === board[4] && board[4] === board[5]) endGame();
         }
         if (board[6] && board[7] && board[8]) {
-            if (board[6] === board[7] && board[7] === board[8]) console.log("row three");
+            if (board[6] === board[7] && board[7] === board[8]) endGame();
         }
     }
 
     // check columns
     const checkColumns = () => {
         if (board[0] && board[3] && board[6]) {
-            if (board[0] === board[3] && board[3] === board[6]) console.log("column one"); 
+            if (board[0] === board[3] && board[3] === board[6]) endGame(); 
         };
         if (board[1] && board[4] && board[7]) {
-            if (board[1] === board[4] && board[4] === board[7]) console.log("column two");
+            if (board[1] === board[4] && board[4] === board[7]) endGame();
         }
         if (board[2] && board[5] && board[8]) {
-            if (board[2] === board[5] && board[5] === board[8]) console.log("column three");
+            if (board[2] === board[5] && board[5] === board[8]) endGame();
         }
     }
 
     // check diagnonals
     const checkDiagonals = () => {
         if (board[0] && board[4] && board[8]) {
-            if (board[0] === board[4] && board[4] === board[8]) console.log("left"); 
+            if (board[0] === board[4] && board[4] === board[8]) endGame(); 
         }
         if (board[2] && board[4] && board[6]) {
-            if (board[2] === board[4] && board[4] === board[6]) console.log("right"); 
+            if (board[2] === board[4] && board[4] === board[6]) endGame();
         }
     }
 
+    const endGame = () => {
+        disableBoard();
+        displayController.announceWinner();
+    }
 
     // place marker
     const placeMarker = (index) => {
@@ -135,10 +163,24 @@ const gameLogic = (() => {
         }
     }
 
+    const disableBoard = () => {
+        board.forEach((cell) => {
+            if (board.cell === '') board.cell = ' ';
+        })
+    }
+
     return {
         placeMarker,
         startGame,
+        currentPlayer,
     }
 })();
 
 gameLogic.startGame();
+
+// start game button should:
+// - properly input player name
+// - properly input player marker (get both marker radio buttons; checked = player1, unchecked = player2);
+// start game normally
+
+// current bug: why the fuck do you always print out player one
