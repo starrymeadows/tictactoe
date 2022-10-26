@@ -13,8 +13,15 @@ const gameboard = (() => {
     }
 })();
 
+const Player = (playerName, marker) => {
+    return { 
+        playerName, 
+        marker, 
+    }
+}
+
 // needs access to: board, players, winstate
-const displayController = ((currentBoard) => {
+const displayController = (() => {
     const cells = document.querySelectorAll('.cell');
     // draw the gameboard
     const initializeBoard = () => {
@@ -50,33 +57,43 @@ const displayController = ((currentBoard) => {
         updateBoard,
     }
 
-})(board);
+})();
 
 
 // needs access to: board, players
 const gameLogic = (() => {
-    const marker = 'z';
-    // determine current player
+    let board = gameboard.board;
+    let player1 = Player('one', 'X');
+    let player2 = Player('two', 'O');
 
-    // place marker (call to update array, update display)
-    const placeMarker = (index) => {
-        if (gameboard.board[index] === '') {
-            gameboard.updateBoard(index, marker);
-            displayController.updateBoard();
-        }
+    let currentPlayer = player1;
+
+    // start game
+    const startGame = () => {
+        displayController.initializeBoard(board);
+    }
+
+    // swap player
+    const swapPlayer = () => {
+        if (currentPlayer === player1) currentPlayer = player2;
+        else currentPlayer = player1;
     }
 
     // determine win / tie
 
-    // swap current player
+    // place marker
+    const placeMarker = (index) => {
+        if (gameboard.board[index] === '') {
+            gameboard.updateBoard(index, currentPlayer.marker);
+            displayController.updateBoard();
+            swapPlayer();
+        }
+    }
 
     return {
         placeMarker,
+        startGame,
     }
 })();
 
-// const Players = (playerName, marker, id) = {
-//     // return new player
-// }
-
-displayController.initializeBoard(gameboard.board);
+gameLogic.startGame();
