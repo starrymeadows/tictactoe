@@ -1,8 +1,6 @@
 const gameboard = (() => {
-    // gameboard array
     const board = ['', '', '', '', '', '', '', '', ''];
 
-    // update array
     const updateBoard = (index, marker) => {
         board.splice(index, 1, marker);
     }
@@ -13,55 +11,59 @@ const gameboard = (() => {
     }
 })();
 
-const Player = (playerName, marker) => {
+const Player = (playerName, marker, id) => {
     return { 
         playerName, 
-        marker, 
+        marker,
+        id,
     }
 }
 
-// needs access to: board, players, winstate
 const displayController = (() => {
     const cells = document.querySelectorAll('.cell');
-    // draw the gameboard
     const initializeBoard = () => {
         for (i = 0; i < cells.length; i++) {
-            // get the index of the cell
             let cell = cells.item(i);
             let index = i;
-            // append content to the cell according to corresponding index of board
             cell.addEventListener('click', () => gameLogic.placeMarker(index));
         };
     };
 
-    // draw players
-
-    // update gameboard
     const updateBoard = () => {
         for (i = 0; i < cells.length; i++) {
-            // get the index of the cell
             let cell = cells.item(i);
-            // append content to the cell according to corresponding index of board
             cell.textContent = gameboard.board[i];
         }
     }
 
+    const deactivateBoard = () => {
+        for (i = 0; i < cells.length; i++) {
+            let cell = cells.item(i);
+            cell.removeEventListener('click', () => gameLogic.placeMarker(index));
+        }
+    }
+
     // display win message
-    const announceWinner = () => {
-        console.log(gameLogic.currentPlayer.playerName);
-        // const outcome = document.querySelector('.outcome');
-        // switch (winner) {
-        //     case 'tie':
-        //         outcome.textContent = `It's a tie!`
-        //         outcome.classList.toggle('.accent');
-        //         break;
-        
-        //     default:
-        //         outcome.textContent = `${gameLogic.currentPlayer.playerName} wins!`;
-        //         break;
-        // }
-        // const gameover = document.querySelector('.gameover');
-        // gameover.classList.add('active');
+    const announceWinner = (winner) => {
+        if (winner.id === 1) console.log('one');
+        if (winner.id === 2) console.log('two');
+        const outcome = document.querySelector('.outcome');
+        switch (winner.id) {
+            case 1:
+                outcome.textContent = `${winner.playerName} wins!`
+                outcome.classList.toggle('playerOne');
+                break;
+            case 2:
+                outcome.textContent = `${winner.playerName} wins!`
+                outcome.classList.toggle('playerTwo');
+                break;
+            default:
+                outcome.textContent = `It's a tie!`;
+                outcome.classList.toggle('accent');
+                break;
+        }
+        const gameover = document.querySelector('.gameover');
+        gameover.classList.add('active');
     }
 
     // add replay button
@@ -71,39 +73,32 @@ const displayController = (() => {
     return {
         initializeBoard,
         updateBoard,
+        deactivateBoard,
         announceWinner,
     }
 
 })();
 
-
-// needs access to: board, players
 const gameLogic = (() => {
     let board = gameboard.board;
-    let player1 = Player('one', 'X');
-    let player2 = Player('two', 'O');
+    let player1 = Player('one', 'X', 1);
+    let player2 = Player('two', 'O', 2);
 
     let currentPlayer = player1;
 
-    // start game
     const startGame = () => {
         displayController.initializeBoard(board);
     }
 
-    // swap player
     const swapPlayer = () => {
         if (currentPlayer === player1) {
             currentPlayer = player2;
             console.log(currentPlayer.playerName);
-            return currentPlayer;
         } else {
             currentPlayer = player1;
             console.log(currentPlayer.playerName);
-            return currentPlayer;
     }
 }
-
-    // determine win / tie
     const isWinner = () => {
         checkRows();
         checkColumns();
@@ -111,48 +106,44 @@ const gameLogic = (() => {
         if (board.every(cell => cell)) endGame('tie');
     }
 
-    // check rows
     const checkRows = () => {
         if (board[0] && board[1] && board[2]) {
-            if (board[0] === board[1] && board[1] === board[2]) endGame(); 
+            if (board[0] === board[1] && board[1] === board[2]) endGame(currentPlayer); 
         };
         if (board[3] && board[4] && board[5]) {
-            if (board[3] === board[4] && board[4] === board[5]) endGame();
+            if (board[3] === board[4] && board[4] === board[5]) endGame(currentPlayer);
         }
         if (board[6] && board[7] && board[8]) {
-            if (board[6] === board[7] && board[7] === board[8]) endGame();
+            if (board[6] === board[7] && board[7] === board[8]) endGame(currentPlayer);
         }
     }
 
-    // check columns
     const checkColumns = () => {
         if (board[0] && board[3] && board[6]) {
-            if (board[0] === board[3] && board[3] === board[6]) endGame(); 
+            if (board[0] === board[3] && board[3] === board[6]) endGame(currentPlayer); 
         };
         if (board[1] && board[4] && board[7]) {
-            if (board[1] === board[4] && board[4] === board[7]) endGame();
+            if (board[1] === board[4] && board[4] === board[7]) endGame(currentPlayer);
         }
         if (board[2] && board[5] && board[8]) {
-            if (board[2] === board[5] && board[5] === board[8]) endGame();
+            if (board[2] === board[5] && board[5] === board[8]) endGame(currentPlayer);
         }
     }
 
-    // check diagnonals
     const checkDiagonals = () => {
         if (board[0] && board[4] && board[8]) {
-            if (board[0] === board[4] && board[4] === board[8]) endGame(); 
+            if (board[0] === board[4] && board[4] === board[8]) endGame(currentPlayer); 
         }
         if (board[2] && board[4] && board[6]) {
-            if (board[2] === board[4] && board[4] === board[6]) endGame();
+            if (board[2] === board[4] && board[4] === board[6]) endGame(currentPlayer);
         }
     }
 
-    const endGame = () => {
-        disableBoard();
-        displayController.announceWinner();
+    const endGame = (winner) => {
+        displayController.deactivateBoard();
+        displayController.announceWinner(winner);
     }
 
-    // place marker
     const placeMarker = (index) => {
         if (gameboard.board[index] === '') {
             gameboard.updateBoard(index, currentPlayer.marker);
@@ -161,12 +152,6 @@ const gameLogic = (() => {
             isWinner();
             swapPlayer();
         }
-    }
-
-    const disableBoard = () => {
-        board.forEach((cell) => {
-            if (board.cell === '') board.cell = ' ';
-        })
     }
 
     return {
