@@ -182,10 +182,3 @@ const gameLogic = (() => {
 })();
 
 displayController.playBtn.addEventListener('click', gameLogic.startGame);
-
-// start game button should:
-// - properly input player name
-// - properly input player marker (get both marker radio buttons; checked = player1, unchecked = player2);
-// start game normally
-
-// current bug: why the fuck do you always print out player one
