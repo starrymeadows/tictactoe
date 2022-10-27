@@ -97,8 +97,6 @@ const displayController = (() => {
         displayController.togglePanels();
     }
 
-    // reset gameboard
-
     return {
         initializeBoard,
         updateBoard,
