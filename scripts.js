@@ -35,6 +35,17 @@ const Player = (playerName, marker, id) => {
 
 const displayController = (() => {
     const cells = document.querySelectorAll('.cell');
+    const playerOne = document.getElementById('playerOne-name');
+    const playerTwo = document.getElementById('playerTwo-name');
+    const panels = document.querySelectorAll('.panel');
+    const outcome = document.querySelector('.outcome');
+    const gameover = document.querySelector('.gameover');
+    const playBtn = document.querySelector('.start');
+    const replayBtn = document.querySelector('.replay');
+
+    const markerChoices = document.querySelectorAll('input[name=playerOne-marker]');
+
+
     const initializeBoard = () => {
         for (i = 0; i < cells.length; i++) {
             let cell = cells.item(i);
@@ -50,11 +61,15 @@ const displayController = (() => {
         }
     }
 
-    // display win message
+    const togglePanels = () => {
+        panels.forEach(panel => {
+            panel.classList.toggle('active');
+        })
+    }
+
     const announceWinner = (winner) => {
         if (winner.id === 1) console.log('one');
         if (winner.id === 2) console.log('two');
-        const outcome = document.querySelector('.outcome');
         switch (winner.id) {
             case 1:
                 outcome.textContent = `${winner.playerName} wins!`
@@ -69,20 +84,17 @@ const displayController = (() => {
                 outcome.classList.toggle('accent');
                 break;
         }
-        const gameover = document.querySelector('.gameover');
         gameover.classList.toggle('active');
-        const replayBtn = document.querySelector('.replay');
-        replayBtn.addEventListener('click', replayGame);
+        replayBtn.addEventListener('click', _replayGame);
     }
 
-    // add replay button
-    const replayGame = () => {
-        const outcome = document.querySelector('.outcome');
-        outcome.classList.remove('playerOne', 'playerTwo', 'accent');
-        const gameover = document.querySelector('.gameover');
+    const _replayGame = () => {
         gameover.classList.toggle('active');
+        outcome.classList.remove('playerOne', 'playerTwo', 'accent');
         gameboard.resetBoard();
         displayController.updateBoard();
+        gameboard.deactivateBoard();
+        displayController.togglePanels();
     }
 
     // reset gameboard
@@ -91,19 +103,38 @@ const displayController = (() => {
         initializeBoard,
         updateBoard,
         announceWinner,
+        playerOne,
+        playerTwo,
+        playBtn,
+        markerChoices,
+        togglePanels,
     }
 
 })();
 
 const gameLogic = (() => {
     let board = gameboard.board;
-    let player1 = Player('one', 'X', 1);
-    let player2 = Player('two', 'O', 2);
-
-    let currentPlayer = player1;
+    let player1, player2, currentPlayer;
 
     const startGame = () => {
+        gameboard.resetBoard();
         displayController.initializeBoard(board);
+        // set player names
+        const playerOneName = displayController.playerOne.value;
+        const playerTwoName = displayController.playerTwo.value;
+        // set player markers
+        const chooseX = displayController.markerChoices[0];
+        const chooseY = displayController.markerChoices[1];
+        if (chooseX.checked) {
+            player1 = Player(playerOneName, chooseX.value, 1);
+            player2 = Player(playerTwoName, chooseY.value, 2)
+            currentPlayer = player1;
+        } else {
+            player1 = Player(playerOneName, chooseY.value, 1);
+            player2 = Player(playerTwoName, chooseX.value, 2);
+            currentPlayer = player1;
+        }
+        displayController.togglePanels();
     }
 
     const swapPlayer = () => {
@@ -150,7 +181,7 @@ const gameLogic = (() => {
     }
 })();
 
-gameLogic.startGame();
+displayController.playBtn.addEventListener('click', gameLogic.startGame);
 
 // start game button should:
 // - properly input player name

@@ -37,15 +37,16 @@ body {
     gap: 25px;
 }
 
-.player,
-.start,
-.enemy,
+.panel,
 .gameover {
     visibility: hidden;
+    opacity: 0;
+    transition: ease 0.5s;
 }
 
 .active {
     visibility: visible;
+    opacity: 1;
 }
 
 .player {
